@@ -15,10 +15,6 @@ Detalle y limitaciones en el [resumen ejecutivo](docs/resumen_ejecutivo.md).
 
 ## Dashboard
 
-Las fuentes de datos del dashboard de Tableau están en [`outputs/tableau/`](outputs/tableau/): un esquema estrella (`fact_models` + 4 dimensiones), la tabla analítica `fact_models_gold.csv`, las tablas de segmentación `seg_*.csv` y las coordenadas PCA/t-SNE.
-
-## Dashboard
-
 ![Vista general del dashboard en Tableau](docs/images/dashboard_vista_general.png)
 
 Las fuentes de datos del dashboard están en [`outputs/tableau/`](outputs/tableau/): un esquema estrella (`fact_models` + 4 dimensiones), la tabla analítica `fact_models_gold.csv`, las tablas de segmentación `seg_*.csv` y las coordenadas PCA/t-SNE.
@@ -78,7 +74,7 @@ Los notebooks se ejecutan en orden. Cada uno indica sus entradas y salidas en el
 Requiere Python 3.10 o superior.
 
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/LuisLazaroMachado/Data_Visualization_TF
 cd Data_Visualization_TF
 
 python -m venv .venv
