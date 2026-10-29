@@ -2,22 +2,24 @@
 
 Análisis de la concentración geográfica, organizacional y tecnológica de **3,405 modelos de inteligencia artificial** (1950–2026) del dataset público de [Epoch AI](https://epoch.ai/data), con un pipeline reproducible en Python y fuentes de datos para un dashboard en Tableau.
 
+**Tecnologías:** Python (pandas, scikit-learn, matplotlib, seaborn), Jupyter, Tableau
+
 > **Pregunta central:** ¿quién concentra hoy el poder tecnológico de la IA y qué factores explican esa concentración?
-
-## Hallazgos principales
-
-- **Dos bloques concentran más del 80% de la producción:** Anglosphere (58%, 1,991 modelos) y China (25%, 847 modelos). Latinoamérica aparece con 2 modelos.
-- **La industria desplazó a la academia:** pasó de 270 modelos en la década de 2010 a 1,801 en la de 2020 (Academia: 349 → 677) y concentra el 62% del total.
-- **Un solo dominio domina:** Language representa el 48% de todos los modelos.
-- **Estructura técnica (PCA y t-SNE sobre 632 modelos):** los modelos se agrupan por era tecnológica y tipo de productor, no por bloque geopolítico. El bloque no fue variable de entrada, así que es una lectura indirecta.
-
-Detalle y limitaciones en el [resumen ejecutivo](docs/resumen_ejecutivo.md).
 
 ## Dashboard
 
 ![Vista general del dashboard en Tableau](docs/images/dashboard_vista_general.png)
 
 Las fuentes de datos del dashboard están en [`outputs/tableau/`](outputs/tableau/): un esquema estrella (`fact_models` + 4 dimensiones), la tabla analítica `fact_models_gold.csv`, las tablas de segmentación `seg_*.csv` y las coordenadas PCA/t-SNE.
+
+## Hallazgos principales
+
+- **Dos bloques concentran más del 80% de la producción:** Anglosphere (58%, 1,991 modelos) y China (25%, 847 modelos). Latinoamérica aparece con 2 modelos.
+- **La industria desplazó a la academia:** pasó de 270 modelos en la década de 2010 a 1,801 en la de 2020 (Academia: 349 → 677) y concentra el 62% del total.
+- **Un solo dominio domina:** Language representa el 48% de todos los modelos.
+- **Estructura técnica (PCA y t-SNE sobre 632 modelos):** los modelos tienden a agruparse por era tecnológica y tipo de productor, no por bloque geopolítico. El bloque no fue variable de entrada, así que es una lectura indirecta.
+
+Detalle y limitaciones en el [resumen ejecutivo](docs/resumen_ejecutivo.md).
 
 ## Visualizaciones del análisis
 
