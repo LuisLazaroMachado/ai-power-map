@@ -1,3 +1,16 @@
+# Python
 __pycache__/
 *.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Jupyter
 .ipynb_checkpoints/
+
+# Entorno, editor y sistema operativo
+.env
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
