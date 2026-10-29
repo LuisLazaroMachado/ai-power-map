@@ -15,7 +15,7 @@ Las fuentes de datos del dashboard están en [`outputs/tableau/`](outputs/tablea
 ## Hallazgos principales
 
 - **Dos bloques concentran más del 80% de la producción:** Anglosphere (58%, 1,991 modelos) y China (25%, 847 modelos). Latinoamérica aparece con 2 modelos.
-- **La industria desplazó a la academia:** pasó de 270 modelos en la década de 2010 a 1,801 en la de 2020 (Academia: 349 → 677) y concentra el 62% del total.
+- **La industria desplazó a la academia:** pasó de 270 modelos en la década de 2010 a 1,801 en la de 2020 (Academia: 349 → 677) y concentra el 62% de los modelos de la decada 2020 .
 - **Un solo dominio domina:** Language representa el 48% de todos los modelos.
 - **Estructura técnica (PCA y t-SNE sobre 632 modelos):** los modelos tienden a agruparse por era tecnológica y tipo de productor, no por bloque geopolítico. El bloque no fue variable de entrada, así que es una lectura indirecta.
 
