@@ -1,7 +1,6 @@
 """
 analytics.py
-Entrega 4 — Segmentación, cálculos analíticos y fuentes para Tableau
-Equipo: DataChasquiAILab
+Segmentación, métricas derivadas y tablas resumen (capa Gold) para Tableau.
 """
 from __future__ import annotations
 import pandas as pd
@@ -167,17 +166,58 @@ def add_participacion_dominio(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-# ── 3. PIPELINE COMPLETO ─────────────────────────────────────────────────────
+# ── 3. VARIABLES BINARIAS (para PCA/t-SNE) ───────────────────────────────────
+
+def add_dummy_variables(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Crea variables binarias desde categóricas para enriquecer
+    el análisis y preparar el componente avanzado PCA/t-SNE.
+    Técnica: One-Hot Encoding parcial sobre categorías principales.
+    """
+    out = df.copy()
+
+    # Desde Domain
+    dominios_principales = [
+        "Language", "Vision", "Biology",
+        "Multimodal", "Image generation", "Speech"
+    ]
+    for dominio in dominios_principales:
+        out[f"es_{dominio.lower().replace(' ', '_')}"] = (
+            out["Domain"] == dominio
+        ).astype(int)
+
+    # Desde Organization categorization
+    out["es_industry"] = (
+        out["Organization categorization"] == "Industry"
+    ).astype(int)
+    out["es_academia"] = (
+        out["Organization categorization"] == "Academia"
+    ).astype(int)
+
+    # Desde Model accessibility
+    out["es_abierto"] = (
+        out["tipo_acceso"] == "Abierto"
+    ).astype(int)
+
+    # Desde Year
+    out["es_post_2020"] = (out["Year"] >= 2020).astype(int)
+    out["es_post_2017"] = (out["Year"] >= 2017).astype(int)
+
+    return out
+
+
+# ── 4. PIPELINE COMPLETO ─────────────────────────────────────────────────────
 
 def build_analytical_dataset(df: pd.DataFrame) -> pd.DataFrame:
     """
     Aplica todas las transformaciones analíticas en secuencia.
-    Retorna el dataset Gold listo para Tableau.
+    Retorna el dataset Gold listo para Tableau y para el análisis PCA/t-SNE.
     """
     out = df.copy()
     out = add_bloque_geopolitico(out)
     out = add_era_tecnologica(out)
     out = add_tipo_acceso(out)
+    out = add_dummy_variables(out)
     out = add_log_metrics(out)
     out = add_modelos_acumulados(out)
     out = add_participacion_pais(out)
@@ -232,52 +272,3 @@ def build_segment_summaries(df: pd.DataFrame) -> dict[str, pd.DataFrame]:
         "seg_org_era": org_era,
         "seg_acceso_era": acceso_era,
     }
-
-def add_dummy_variables(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Crea variables binarias desde categóricas para enriquecer
-    el análisis y preparar el componente avanzado PCA/t-SNE.
-    Técnica: One-Hot Encoding parcial sobre categorías principales.
-    """
-    out = df.copy()
-
-    # Desde Domain
-    dominios_principales = [
-        "Language", "Vision", "Biology",
-        "Multimodal", "Image generation", "Speech"
-    ]
-    for dominio in dominios_principales:
-        out[f"es_{dominio.lower().replace(' ', '_')}"] = (
-            out["Domain"] == dominio
-        ).astype(int)
-
-    # Desde Organization categorization
-    out["es_industry"] = (
-        out["Organization categorization"] == "Industry"
-    ).astype(int)
-    out["es_academia"] = (
-        out["Organization categorization"] == "Academia"
-    ).astype(int)
-
-    # Desde Model accessibility
-    out["es_abierto"] = (
-        out["tipo_acceso"] == "Abierto"
-    ).astype(int)
-
-    # Desde Year
-    out["es_post_2020"] = (out["Year"] >= 2020).astype(int)
-    out["es_post_2017"] = (out["Year"] >= 2017).astype(int)
-
-    return out
-
-def build_analytical_dataset(df: pd.DataFrame) -> pd.DataFrame:
-    out = df.copy()
-    out = add_bloque_geopolitico(out)
-    out = add_era_tecnologica(out)
-    out = add_tipo_acceso(out)
-    out = add_dummy_variables(out)  # ← nueva línea
-    out = add_log_metrics(out)
-    out = add_modelos_acumulados(out)
-    out = add_participacion_pais(out)
-    out = add_participacion_dominio(out)
-    return out
