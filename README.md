@@ -1,102 +1,102 @@
 # The AI Power Map
 
-Análisis de la concentración geográfica, organizacional y tecnológica de **3,405 modelos de inteligencia artificial** (1950–2026) del dataset público de [Epoch AI](https://epoch.ai/data), con un pipeline reproducible en Python y fuentes de datos para un dashboard en Tableau.
+Analysis of the geographic, organizational, and technological concentration of **3,405 artificial intelligence models** (1950–2026) from the public [Epoch AI](https://epoch.ai/data) dataset, with a reproducible Python pipeline and data sources for a Tableau dashboard.
 
-**Tecnologías:** Python (pandas, scikit-learn, matplotlib, seaborn), Jupyter, Tableau
+**Technologies:** Python (pandas, scikit-learn, matplotlib, seaborn), Jupyter, Tableau
 
-> **Pregunta central:** ¿quién concentra hoy el poder tecnológico de la IA y qué factores explican esa concentración?
+> **Central question:** who holds the technological power in AI today, and what factors explain that concentration?
 
 ## Dashboard
 
-![Vista general del dashboard en Tableau](docs/images/dashboard_vista_general.png)
+![Tableau dashboard overview](docs/images/dashboard_vista_general.png)
 
-Las fuentes de datos del dashboard están en [`outputs/tableau/`](outputs/tableau/): un esquema estrella (`fact_models` + 4 dimensiones), la tabla analítica `fact_models_gold.csv`, las tablas de segmentación `seg_*.csv` y las coordenadas PCA/t-SNE.
+The dashboard data sources are in [`outputs/tableau/`](outputs/tableau/): a star schema (`fact_models` + 4 dimensions), the analytical table `fact_models_gold.csv`, the segmentation tables `seg_*.csv`, and the PCA/t-SNE coordinates.
 
-## Hallazgos principales
+## Key Findings
 
-- **Dos bloques concentran más del 80% de la producción:** Anglosphere (58%, 1,991 modelos) y China (25%, 847 modelos). Latinoamérica aparece con 2 modelos.
-- **La industria desplazó a la academia:** pasó de 270 modelos en la década de 2010 a 1,801 en la de 2020 (Academia: 349 → 677) y concentra el 62% de los modelos en la decada 2020 .
-- **Un solo dominio domina:** Language representa el 48% de todos los modelos.
-- **Estructura técnica (PCA y t-SNE sobre 632 modelos):** los modelos tienden a agruparse por era tecnológica y tipo de productor, no por bloque geopolítico. El bloque no fue variable de entrada, así que es una lectura indirecta.
+- **Two blocs account for more than 80% of production:** Anglosphere (58%, 1,991 models) and China (25%, 847 models). Latin America appears with 2 models.
+- **Industry displaced academia:** it grew from 270 models in the 2010s to 1,801 in the 2020s (Academia: 349 → 677) and accounts for 62% of the models in the 2020s.
+- **A single domain dominates:** Language represents 48% of all models.
+- **Technical structure (PCA and t-SNE on 632 models):** models tend to cluster by technological era and producer type, not by geopolitical bloc. The bloc was not an input variable, so this is an indirect reading.
 
-Detalle y limitaciones en el [resumen ejecutivo](docs/resumen_ejecutivo.md).
+Details and limitations in the [executive summary](docs/resumen_ejecutivo.md).
 
-## Visualizaciones del análisis
+## Analysis Visualizations
 
-PCA (estructura global) frente a t-SNE (estructura local), coloreados por era tecnológica:
+PCA (global structure) versus t-SNE (local structure), colored by technological era:
 
 ![PCA vs t-SNE](outputs/reports/pca_vs_tsne.png)
 
-## Qué se analizó
+## What Was Analyzed
 
-Los notebooks se ejecutan en orden. Cada uno indica sus entradas y salidas en el encabezado.
+The notebooks are run in order. Each one lists its inputs and outputs in its header.
 
-| # | Notebook | Qué hace | Técnicas y decisiones |
+| # | Notebook | What it does | Techniques and decisions |
 |---|---|---|---|
-| 01 | [`perfilado_y_limpieza`](notebooks/01_perfilado_y_limpieza.ipynb) | Perfila el dataset crudo (3,509 filas × 57 columnas) y lo limpia hasta 3,405 × 22 | Análisis de nulos y cardinalidad, deduplicación por `Model`, homologación de categorías, imputación con `Unknown` en categóricas |
-| 02 | [`analisis_exploratorio`](notebooks/02_analisis_exploratorio.ipynb) | Explora la distribución por año, país, dominio, organización y accesibilidad | Distribuciones, evolución por década, correlación entre variables numéricas |
-| 03 | [`modelo_de_datos_plano_vs_estrella`](notebooks/03_modelo_de_datos_plano_vs_estrella.ipynb) | Compara dos estructuras de datos para Tableau y elige una | Métricas de validación estructural; esquema estrella frente a tabla plana |
-| 04 | [`segmentacion_y_metricas`](notebooks/04_segmentacion_y_metricas.ipynb) | Segmenta y calcula métricas derivadas (capa Gold) | Bloque geopolítico, era tecnológica, tipo de acceso, log(x+1), participación porcentual, acumulados |
-| 05 | [`reduccion_dimensionalidad_pca_tsne`](notebooks/05_reduccion_dimensionalidad_pca_tsne.ipynb) | Busca estructura técnica en 632 modelos | StandardScaler, PCA (varianza y loadings), t-SNE, validación con otra semilla |
-| — | [`exploraciones/`](notebooks/exploraciones/exploracion_preprocesamiento_pca_kmeans.ipynb) | Preprocesamiento para PCA + K-Means (1,212 filas) | Selección de variables por cobertura y one-hot encoding. K-Means no llegó a ejecutarse; no forma parte del análisis final |
+| 01 | [`perfilado_y_limpieza`](notebooks/01_perfilado_y_limpieza.ipynb) | Profiles the raw dataset (3,509 rows × 57 columns) and cleans it down to 3,405 × 22 | Null and cardinality analysis, deduplication by `Model`, category harmonization, imputation with `Unknown` for categorical variables |
+| 02 | [`analisis_exploratorio`](notebooks/02_analisis_exploratorio.ipynb) | Explores the distribution by year, country, domain, organization, and accessibility | Distributions, evolution by decade, correlation between numeric variables |
+| 03 | [`modelo_de_datos_plano_vs_estrella`](notebooks/03_modelo_de_datos_plano_vs_estrella.ipynb) | Compares two data structures for Tableau and picks one | Structural validation metrics; star schema versus flat table |
+| 04 | [`segmentacion_y_metricas`](notebooks/04_segmentacion_y_metricas.ipynb) | Segments the data and computes derived metrics (Gold layer) | Geopolitical bloc, technological era, access type, log(x+1), percentage share, cumulative totals |
+| 05 | [`reduccion_dimensionalidad_pca_tsne`](notebooks/05_reduccion_dimensionalidad_pca_tsne.ipynb) | Looks for technical structure in 632 models | StandardScaler, PCA (variance and loadings), t-SNE, validation with a different seed |
+| — | [`exploraciones/`](notebooks/exploraciones/exploracion_preprocesamiento_pca_kmeans.ipynb) | Preprocessing for PCA + K-Means (1,212 rows) | Feature selection by coverage and one-hot encoding. K-Means was never run; not part of the final analysis |
 
-### Decisiones y opciones evaluadas
+### Decisions and Options Evaluated
 
-| Decisión | Opciones | Elegida | Por qué |
+| Decision | Options | Chosen | Why |
 |---|---|---|---|
-| Modelo de datos para Tableau | Tabla plana, esquema estrella (el copo de nieve se descartó por innecesario) | Esquema estrella | Conserva las 3,405 filas, no genera llaves nulas y evita repetir atributos. La tabla plana queda como respaldo |
-| Nulos numéricos | Imputar o conservar | Conservar | Imputar sesgaría variables con distribución muy asimétrica |
-| Nulos categóricos | Descartar filas o etiquetar | Etiquetar como `Unknown` | No se pierden filas en el análisis |
-| Escalado antes de PCA | StandardScaler o MinMaxScaler | StandardScaler | MinMaxScaler es más sensible a outliers extremos |
-| Variables numéricas | Originales o log(x+1) | log(x+1) | Reduce la asimetría y evita log(0) |
-| Reducción de dimensionalidad | PCA, t-SNE o ambos | Ambos | PCA muestra estructura global; t-SNE, vecindarios locales |
-| Agrupar con K-Means | Evaluar con silhouette (k de 2 a 8) | No usado | Silhouette entre 0.21 y 0.33 y grupos muy desparejos (hasta 86.6% en uno): no hay grupos claramente separados |
+| Data model for Tableau | Flat table, star schema (snowflake was discarded as unnecessary) | Star schema | Keeps all 3,405 rows, produces no null keys, and avoids repeating attributes. The flat table is kept as a fallback |
+| Numeric nulls | Impute or keep | Keep | Imputing would bias highly skewed variables |
+| Categorical nulls | Drop rows or label | Label as `Unknown` | No rows are lost in the analysis |
+| Scaling before PCA | StandardScaler or MinMaxScaler | StandardScaler | MinMaxScaler is more sensitive to extreme outliers |
+| Numeric variables | Original or log(x+1) | log(x+1) | Reduces skewness and avoids log(0) |
+| Dimensionality reduction | PCA, t-SNE, or both | Both | PCA shows global structure; t-SNE shows local neighborhoods |
+| Clustering with K-Means | Evaluate with silhouette (k from 2 to 8) | Not used | Silhouette between 0.21 and 0.33 and very uneven clusters (up to 86.6% in one): no clearly separated groups |
 
-### Conceptos usados
+### Concepts Used
 
-| Concepto | En palabras simples |
+| Concept | In plain words |
 |---|---|
-| **PCA** | Resume muchas variables en pocas dimensiones conservando la mayor varianza posible. Sirve para ver qué variables explican más |
-| **t-SNE** | Acerca los elementos parecidos entre sí. Preserva vecindarios locales, no distancias globales, y no debe leerse como distancia real entre grupos |
-| **StandardScaler** | Centra cada variable en media 0 y desviación 1, para que ninguna domine por tener valores grandes |
-| **One-hot encoding** | Convierte cada categoría en una columna 0/1 |
-| **Esquema estrella** | Una tabla de hechos conectada a tablas de dimensiones |
-| **Arquitectura Medallion** | Bronze (dato crudo) → Silver (dato limpio) → Gold (dato listo para análisis) |
+| **PCA** | Summarizes many variables into a few dimensions while preserving as much variance as possible. Useful for seeing which variables explain the most |
+| **t-SNE** | Places similar items close together. It preserves local neighborhoods, not global distances, and should not be read as the real distance between groups |
+| **StandardScaler** | Centers each variable at mean 0 and standard deviation 1, so that none dominates because of large values |
+| **One-hot encoding** | Converts each category into a 0/1 column |
+| **Star schema** | A fact table connected to dimension tables |
+| **Medallion architecture** | Bronze (raw data) → Silver (clean data) → Gold (analysis-ready data) |
 
-## Arquitectura de datos
+## Data Architecture
 
-| Capa | Ubicación | Contenido |
+| Layer | Location | Contents |
 |---|---|---|
-| Bronze | `data/raw/all_ai_models.csv` | Dataset original (3,509 × 57) |
-| Silver | `data/processed/all_ai_models_clean.csv` | Dataset limpio (3,405 × 22) |
-| Gold | `outputs/tableau/` | Esquema estrella, `fact_models_gold.csv` (3,405 × 45), tablas `seg_*` y embedding PCA/t-SNE (632 filas) |
+| Bronze | `data/raw/all_ai_models.csv` | Original dataset (3,509 × 57) |
+| Silver | `data/processed/all_ai_models_clean.csv` | Clean dataset (3,405 × 22) |
+| Gold | `outputs/tableau/` | Star schema, `fact_models_gold.csv` (3,405 × 45), `seg_*` tables, and PCA/t-SNE embedding (632 rows) |
 
-## Cómo reproducir
+## How to Reproduce
 
-Requiere Python 3.10 o superior.
+Requires Python 3.10 or higher.
 
 ```bash
 git clone https://github.com/LuisLazaroMachado/ai-power-map
 cd ai-power-map
 
 python -m venv .venv
-.venv\Scripts\activate        # Windows (PowerShell). En Linux/macOS: source .venv/bin/activate
+.venv\Scripts\activate        # Windows (PowerShell). On Linux/macOS: source .venv/bin/activate
 pip install -r requirements.txt
 
-python -m src.pipeline         # regenera Silver y Gold (limpieza, esquema estrella, segmentación)
-jupyter lab                    # abrir notebooks/ y ejecutarlos en orden
+python -m src.pipeline         # regenerates Silver and Gold (cleaning, star schema, segmentation)
+jupyter lab                    # open notebooks/ and run them in order
 ```
 
-`python -m src.pipeline` regenera todas las tablas de `data/processed/` y `outputs/` excepto el análisis PCA/t-SNE, que se genera ejecutando el notebook 05.
+`python -m src.pipeline` regenerates all tables in `data/processed/` and `outputs/` except the PCA/t-SNE analysis, which is generated by running notebook 05.
 
-## Estructura del repositorio
+## Repository Structure
 
 ```text
 ai-power-map/
 ├── LICENSE
 ├── requirements.txt
 ├── data/
-│   ├── README.md             # fuente, licencia y modificaciones de los datos
+│   ├── README.md             # data source, license, and modifications
 │   ├── raw/                  # Bronze: all_ai_models.csv (Epoch AI)
 │   └── processed/            # Silver: all_ai_models_clean.csv
 ├── notebooks/
@@ -107,29 +107,29 @@ ai-power-map/
 │   ├── 05_reduccion_dimensionalidad_pca_tsne.ipynb
 │   └── exploraciones/
 ├── src/
-│   ├── config.py             # rutas y listas de columnas
-│   ├── io_utils.py           # lectura y escritura de CSV
+│   ├── config.py             # paths and column lists
+│   ├── io_utils.py           # CSV reading and writing
 │   ├── preprocessing.py      # Bronze → Silver
-│   ├── modeling.py           # tabla plana y esquema estrella
-│   ├── analytics.py          # segmentación y métricas (Gold)
+│   ├── modeling.py           # flat table and star schema
+│   ├── analytics.py          # segmentation and metrics (Gold)
 │   └── pipeline.py           # python -m src.pipeline
 ├── outputs/
-│   ├── reports/              # métricas de calidad y figuras PCA/t-SNE
-│   └── tableau/              # fuentes de datos del dashboard
+│   ├── reports/              # quality metrics and PCA/t-SNE figures
+│   └── tableau/              # dashboard data sources
 └── docs/
     ├── resumen_ejecutivo.md
     ├── modelo_de_datos_y_preprocesamiento.md
-    └── images/               # capturas del dashboard
+    └── images/               # dashboard screenshots
 ```
 
-## Limitaciones
+## Limitations
 
-- PCA y t-SNE cubren 632 de 3,405 modelos (18.6%): solo los que tienen completas las variables numéricas clave.
-- `Parameters`, `Training compute (FLOP)` y `Citations` tienen 34%, 60% y 57% de nulos. No se imputaron.
-- Los bloques geopolíticos mapean 28 países de forma explícita. Los 81 modelos (2.4%) de otros 20 países quedan en el bloque "Otro".
+- PCA and t-SNE cover 632 of 3,405 models (18.6%): only those with complete key numeric variables.
+- `Parameters`, `Training compute (FLOP)`, and `Citations` have 34%, 60%, and 57% nulls. They were not imputed.
+- The geopolitical blocs explicitly map 28 countries. The 81 models (2.4%) from 20 other countries fall into the "Otro" (Other) bloc.
 
-## Licencias, fuente de datos y autores
+## Licenses, Data Source, and Authors
 
-- **Código:** licencia [MIT](LICENSE).
-- **Datos:** Epoch AI, *All AI Models*, bajo [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Los datos derivados (`data/processed/` y `outputs/`) conservan la atribución a Epoch AI. Detalle, cita y lista de modificaciones en [`data/README.md`](data/README.md).
-- **Autores:** Fabian Marcelo Rojas Cuadros y Lazaro Machado Luis Isaac. Equipo DataChasquiAILab, curso Data Visualization, Universidad Peruana de Ciencias Aplicadas.
+- **Code:** [MIT](LICENSE) license.
+- **Data:** Epoch AI, *All AI Models*, under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Derived data (`data/processed/` and `outputs/`) retains attribution to Epoch AI. Details, citation, and list of modifications in [`data/README.md`](data/README.md).
+- **Authors:** Fabian Marcelo Rojas Cuadros and Lazaro Machado Luis Isaac. Team DataChasquiAILab, Data Visualization course, Universidad Peruana de Ciencias Aplicadas.
