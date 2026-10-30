@@ -15,7 +15,7 @@ Las fuentes de datos del dashboard están en [`outputs/tableau/`](outputs/tablea
 ## Hallazgos principales
 
 - **Dos bloques concentran más del 80% de la producción:** Anglosphere (58%, 1,991 modelos) y China (25%, 847 modelos). Latinoamérica aparece con 2 modelos.
-- **La industria desplazó a la academia:** pasó de 270 modelos en la década de 2010 a 1,801 en la de 2020 (Academia: 349 → 677) y concentra el 62% de los modelos de la decada 2020 .
+- **La industria desplazó a la academia:** pasó de 270 modelos en la década de 2010 a 1,801 en la de 2020 (Academia: 349 → 677) y concentra el 62% de los modelos en la decada 2020 .
 - **Un solo dominio domina:** Language representa el 48% de todos los modelos.
 - **Estructura técnica (PCA y t-SNE sobre 632 modelos):** los modelos tienden a agruparse por era tecnológica y tipo de productor, no por bloque geopolítico. El bloque no fue variable de entrada, así que es una lectura indirecta.
 
@@ -76,8 +76,8 @@ Los notebooks se ejecutan en orden. Cada uno indica sus entradas y salidas en el
 Requiere Python 3.10 o superior.
 
 ```bash
-git clone https://github.com/LuisLazaroMachado/Data_Visualization_TF
-cd Data_Visualization_TF
+git clone https://github.com/LuisLazaroMachado/ai-power-map
+cd ai-power-map
 
 python -m venv .venv
 .venv\Scripts\activate        # Windows (PowerShell). En Linux/macOS: source .venv/bin/activate
@@ -92,7 +92,7 @@ jupyter lab                    # abrir notebooks/ y ejecutarlos en orden
 ## Estructura del repositorio
 
 ```text
-Data_Visualization_TF/
+ai-power-map/
 ├── LICENSE
 ├── requirements.txt
 ├── data/
